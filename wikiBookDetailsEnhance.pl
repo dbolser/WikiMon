@@ -1,9 +1,14 @@
 use strict;
 use warnings;
+
+## To talk to the MediaWiki API
 use MediaWiki::API;
+
+## Handle the CLI
+use Getopt::Long;
+
 use List::MoreUtils qw(uniq);
 use Data::Dumper qw(Dumper);
-use Getopt::Long;
 use Time::localtime;
 use DateTime ();
 use DateTime::Duration ();
