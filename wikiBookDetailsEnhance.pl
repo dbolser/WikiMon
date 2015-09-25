@@ -21,7 +21,7 @@ sub usage{
         my $fileName = basename($0);
         print "\n=======================================================================\n";
         print "Usage : \n";
-        print $fileName . " --bookName <Name of the Book> --username <Username> --password <Password> [--date <Date>] [--NoBot] \n";
+        print $fileName . " --bookName <Name of the Book> [--username <Username> --password <Password>] [--date <Date>] [--NoBot] \n";
         print "-----------------------------------------------------------------------\n";
         print "bookName : It takes the name of the book as argument and get the details for it.\n";
         print "username : Username of for the login.\n";
@@ -39,8 +39,8 @@ my $bookNameToGetData = "";
 my $dateTimeForComparision = "";
 my $botFlg = 0;
 my $helpFlg = 0;
-my $username = "";
-my $password = "";
+my $username;
+my $password;
 ##-------------------------------------------------------------#
 my $MAX_CHANGED_PAGES = 5;
 my %allPageChanges = ();
@@ -64,7 +64,7 @@ if ($helpFlg == 1){
         usage();
         exit 0;
 }
-if($bookNameToGetData eq "" || $username eq "" || $password eq ""){
+if($bookNameToGetData eq ""){
         usage();
         exit 1;
 }
@@ -85,10 +85,11 @@ print "========================================================\n";
 my $mw = MediaWiki::API->new();
 $mw->{config}->{api_url} = 'https://en.wikibooks.org/w/api.php';
 
-#Login 
-$mw->login( { lgname => $username, lgpassword => $password } )
-  || die $mw->{error}->{code} . ': ' . $mw->{error}->{details};
-
+#Login
+if(defined($username)){
+    $mw->login( { lgname => $username, lgpassword => $password } )
+	|| die $mw->{error}->{code} . ': ' . $mw->{error}->{details};
+}
 
 # Convert the given date as argument to object.
 my $datetimeFormatNow = "";
